@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "dev.kwak0.toggle_keybinds.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "toggle-keybinds",
+	"version": "${version}",
+	"name": "Toggle Keybinds",
+	"description": "Add keybinds that let you toggle between hotbar slots.",
+	"authors": [
+		"kwak0"
+	],
+	"contact": {
+		"sources": "https://github.com/kwak0/toggle-keybinds"
+	},
+	"license": "GNU LGPLv3",
+	"icon": "assets/toggle-keybinds/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"dev.kwak0.toggle_keybinds.ToggleKeybindsClient"
+		],
+		"modmenu": [
+			"dev.kwak0.toggle_keybinds.ModMenu"
+		]
+	},
+	"mixins": [
+		"toggle-keybinds.mixins.json",
+		{
+			"config": "toggle-keybinds.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

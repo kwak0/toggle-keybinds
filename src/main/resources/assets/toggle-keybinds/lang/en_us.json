@@ -1,0 +1,12 @@
+{
+  "toggle_keybinds.modmenuscreen.title": "Toggle Keybinds",
+  "toggle_keybinds.modmenuscreen.save": "Save",
+  "toggle_keybinds.modmenuscreen.cancel": "Cancel",
+  "toggle_keybinds.modmenuscreen.binding.add": "Add",
+  "toggle_keybinds.modmenuscreen.binding.add.tooltip": "Add a new toggle keybind",
+  "toggle_keybinds.modmenuscreen.binding.remove": "Remove",
+  "toggle_keybinds.modmenuscreen.binding.slot1" : "Slot 1: ",
+  "toggle_keybinds.modmenuscreen.binding.slot2" : "Slot 2: ",
+  "toggle_keybinds.key.not_bound" : "Not Bound",
+  "toggle_keybinds.readme" : "Keybinds can be configured on the config screen from the mods menu (Esc -> Mods -> Toggle Keybinds -> [config icon in top right]."
+}
