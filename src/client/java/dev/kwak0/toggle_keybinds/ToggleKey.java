@@ -21,12 +21,17 @@ public class ToggleKey {
     }
 
     public ToggleKey(int slot1, int slot2, int keyCode) {
-        this(slot1, slot2, InputUtil.UNKNOWN_KEY);
-        // Creating mouse keys with InputUtil.fromKeyCode() causes getLocalisedName() to not give the right name.
+        this.slot1 = slot1;
+        this.slot2 = slot2;
+        this.duplicate = false;
+        if (keyCode == -1) {
+            this.key = InputUtil.UNKNOWN_KEY;
+            return;
+        }
+        this.key = InputUtil.fromKeyCode(keyCode, -1);
+        // Creating mouse keys with InputUtil.fromKeyCode() causes getLocalisedName() to not return the right name.
         if (getKeyType() == KeyType.MOUSE) {
-            key = InputUtil.Type.MOUSE.createFromCode(keyCode);
-        } else if (getKeyType() == KeyType.KEY) {
-            key = InputUtil.fromKeyCode(keyCode, -1);
+            this.key = InputUtil.Type.MOUSE.createFromCode(keyCode);
         }
     }
 
