@@ -8,7 +8,8 @@
 		"kwak0"
 	],
 	"contact": {
-		"sources": "https://github.com/kwak0/toggle-keybinds"
+		"sources": "https://github.com/kwak0/toggle-keybinds",
+		"issues": "https://github.com/kwak0/toggle-keybinds/issues"
 	},
 	"license": "GNU LGPLv3",
 	"icon": "assets/toggle-keybinds/icon.png",
@@ -33,5 +34,8 @@
 		"minecraft": "~1.21.6",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"suggested": {
+		"modmenu": "15.0.0-beta.3"
 	}
 }

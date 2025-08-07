@@ -1,6 +1,6 @@
 # Toggle Keybinds Mod
 
-This mod allows you to keybinding that let you switch between 2 hotbar slots with one button.
+This mod allows you to add keybindings that let you switch between 2 hotbar slots with one button.
 Useful if you want to navigate your hotbar quickly but don't like to use a lot of hotkeys.
 
 ## Installation
