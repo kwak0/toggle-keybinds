@@ -43,7 +43,7 @@ public class ToggleKey {
         MinecraftClient client = MinecraftClient.getInstance();
         if (action == GLFW.GLFW_PRESS && isActive(client)  && client.player != null) {
             PlayerInventory inventory = client.player.getInventory();
-            if (inventory.getSelectedSlot() != slot1) {
+            if (inventory.selectedSlot != slot1) {
                 inventory.setSelectedSlot(slot1);
             } else {
                 inventory.setSelectedSlot(slot2);
