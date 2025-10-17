@@ -3,7 +3,9 @@ package dev.kwak0.toggle_keybinds;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 
@@ -22,18 +24,17 @@ public class ToggleKeybindsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		// This runs after GLFW is initialized
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> ToggleKeys.loadKeys());
-
-		generateReadMe();
 	}
 
-	private void generateReadMe() {
+	// Gets called by LanguageLoadedMixin so the proper content gets written
+	public static void generateReadMe() {
 		Path path = CONFIG_PATH.resolve("README.txt");
 		if (Files.exists(path)) {
 			return;
 		}
 		createConfigFolder();
 		try (PrintWriter writer = new PrintWriter(path.toFile())) {
-			writer.println(Text.translatable("toggle_keybinds.readme"));
+			writer.println(Text.translatable("toggle_keybinds.readme").getString());
 		} catch (FileNotFoundException e) {
             LOGGER.error("Could not create README.txt");
         }

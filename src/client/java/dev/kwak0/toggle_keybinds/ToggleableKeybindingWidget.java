@@ -8,6 +8,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.CharInput;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -76,10 +77,9 @@ public class ToggleableKeybindingWidget extends ElementListWidget<ToggleableKeyb
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX,
-                int mouseY, boolean hovered, float tickProgress) {
-            addButton.setPosition(x + (getRowWidth() - addButton.getWidth()) / 2, y + 3);
-            addButton.render(context, mouseX, mouseY, tickProgress);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            addButton.setPosition(getContentX() + (getRowWidth() - addButton.getWidth()) / 2, getContentY() + 3);
+            addButton.render(context, mouseX, mouseY, deltaTicks);
         }
 
         @Override
@@ -129,19 +129,19 @@ public class ToggleableKeybindingWidget extends ElementListWidget<ToggleableKeyb
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickProgress) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             context.drawTextWithShadow(client.textRenderer, Text.translatable("toggle_keybinds.modmenuscreen.binding.slot1"),
-                    x, y + entryHeight / 2 - 4, -1);
-            slot1TextField.setPosition(x + 40, y - 2);
-            slot1TextField.render(context, mouseX, mouseY, tickProgress);
+                    getContentX(), getContentY() + getContentHeight() / 2 - 4, -1);
+            slot1TextField.setPosition(getContentX() + 40, getContentY() - 2);
+            slot1TextField.render(context, mouseX, mouseY, deltaTicks);
             context.drawTextWithShadow(client.textRenderer, Text.translatable("toggle_keybinds.modmenuscreen.binding.slot2"),
-                    slot1TextField.getX() + slot1TextField.getWidth() + 10, y + entryHeight / 2 - 4, -1);
-            slot2TextField.setPosition(slot1TextField.getX() + slot1TextField.getWidth() + 50, y -2);
-            slot2TextField.render(context, mouseX, mouseY, tickProgress);
-            removeButton.setPosition(getScrollbarX() - 10 - editButton.getWidth(), y - 2);
-            removeButton.render(context,  mouseX, mouseY, tickProgress);
-            editButton.setPosition(removeButton.getX() - 5 - editButton.getWidth(), y -2);
-            editButton.render(context,  mouseX, mouseY, tickProgress);
+                    slot1TextField.getX() + slot1TextField.getWidth() + 10, getContentY() + getContentHeight() / 2 - 4, -1);
+            slot2TextField.setPosition(slot1TextField.getX() + slot1TextField.getWidth() + 50, getContentY() -2);
+            slot2TextField.render(context, mouseX, mouseY, deltaTicks);
+            removeButton.setPosition(getScrollbarX() - 10 - editButton.getWidth(), getContentY() - 2);
+            removeButton.render(context,  mouseX, mouseY, deltaTicks);
+            editButton.setPosition(removeButton.getX() - 5 - editButton.getWidth(), getContentY() -2);
+            editButton.render(context,  mouseX, mouseY, deltaTicks);
         }
 
         @Override
@@ -179,8 +179,8 @@ public class ToggleableKeybindingWidget extends ElementListWidget<ToggleableKeyb
             }
 
             @Override
-            public boolean charTyped(char chr, int modifiers) {
-                return getCursor() == 0 && Character.isDigit(chr) && chr != '0' && super.charTyped(chr, modifiers);
+            public boolean charTyped(CharInput input) {
+                return getCursor() == 0 && input.asString().matches("[1-9]") && super.charTyped(input);
             }
         }
     }

@@ -1,7 +1,9 @@
 package dev.kwak0.toggle_keybinds;
 
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
@@ -73,30 +75,30 @@ public class ModMenuScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         if (this.selectedKeyBinding != null) {
-            this.selectedKeyBinding.setKey(InputUtil.Type.MOUSE.createFromCode(button));
+            this.selectedKeyBinding.setKey(InputUtil.Type.MOUSE.createFromCode(click.getKeycode()));
             this.selectedKeyBinding = null;
             this.list.update();
             return true;
         } else {
-            return super.mouseClicked(mouseX, mouseY, button);
+            return super.mouseClicked(click, doubled);
         }
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         if (selectedKeyBinding != null) {
-            if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            if (input.getKeycode() == GLFW.GLFW_KEY_ESCAPE) {
                 selectedKeyBinding.setKey(InputUtil.UNKNOWN_KEY);
             } else {
-                selectedKeyBinding.setKey(InputUtil.fromKeyCode(keyCode, scanCode));
+                selectedKeyBinding.setKey(InputUtil.fromKeyCode(input));
             }
             selectedKeyBinding = null;
             list.update();
             return true;
         } else {
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(input);
         }
     }
 

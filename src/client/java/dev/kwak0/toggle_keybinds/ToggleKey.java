@@ -1,6 +1,7 @@
 package dev.kwak0.toggle_keybinds;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -28,7 +29,7 @@ public class ToggleKey {
             this.key = InputUtil.UNKNOWN_KEY;
             return;
         }
-        this.key = InputUtil.fromKeyCode(keyCode, -1);
+        this.key = InputUtil.fromKeyCode(new KeyInput(keyCode, -1, -1));
         // Creating mouse keys with InputUtil.fromKeyCode() causes getLocalisedName() to not return the right name.
         if (getKeyType() == KeyType.MOUSE) {
             this.key = InputUtil.Type.MOUSE.createFromCode(keyCode);
