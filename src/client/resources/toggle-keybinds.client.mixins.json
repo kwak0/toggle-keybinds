@@ -2,12 +2,13 @@
   "required": true,
   "package": "dev.kwak0.toggle_keybinds.mixin.client",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "KeyInputMixin",
-    "MouseInputMixin",
-    "LanguageLoadedMixin"
-  ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "HandleScreenMixin",
+    "KeyInputMixin",
+    "LanguageLoadedMixin",
+    "MouseInputMixin"
+  ]
 }
