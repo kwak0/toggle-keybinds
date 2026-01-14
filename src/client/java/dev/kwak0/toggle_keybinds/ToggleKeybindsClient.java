@@ -3,9 +3,7 @@ package dev.kwak0.toggle_keybinds;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 
@@ -18,7 +16,7 @@ public class ToggleKeybindsClient implements ClientModInitializer {
 
 	public static String MOD_ID = "toggle_keybinds";
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(ToggleKeybindsClient.MOD_ID);
-	public static final Logger LOGGER = LogUtils.getLogger();
+	private static final Logger LOGGER = LogUtils.getLogger();
 
 	@Override
 	public void onInitializeClient() {

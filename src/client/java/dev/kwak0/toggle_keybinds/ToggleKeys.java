@@ -2,6 +2,8 @@ package dev.kwak0.toggle_keybinds;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,11 +11,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
 import static dev.kwak0.toggle_keybinds.ToggleKeybindsClient.CONFIG_PATH;
 
 public class ToggleKeys {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Path CONFIG_FILE_PATH = CONFIG_PATH.resolve("keybinds.json");
     private static final File CONFIG_FILE = CONFIG_FILE_PATH.toFile();
 
