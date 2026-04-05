@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
@@ -32,7 +32,7 @@ public class ToggleKeybindsClient implements ClientModInitializer {
 		}
 		createConfigFolder();
 		try (PrintWriter writer = new PrintWriter(path.toFile())) {
-			writer.println(Text.translatable("toggle_keybinds.readme").getString());
+			writer.println(Component.translatable("toggle_keybinds.readme").getString());
 		} catch (FileNotFoundException e) {
             LOGGER.error("Could not create README.txt");
         }

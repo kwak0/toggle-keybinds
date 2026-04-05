@@ -1,11 +1,16 @@
 package dev.kwak0.toggle_keybinds;
 
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.layouts.LayoutSettings;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.input.KeyEvent;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -14,14 +19,14 @@ import java.util.List;
 public class ModMenuScreen extends Screen {
 
     private final Screen parent;
-    private ThreePartsLayoutWidget layout;
+    private HeaderAndFooterLayout layout;
     private ToggleableKeybindingWidget list;
     private ToggleKey selectedKeyBinding;
 
     private final List<ToggleKey> newKeys;
 
     protected ModMenuScreen(Screen parent) {
-        super(Text.translatable("toggle_keybinds.modmenuscreen.title"));
+        super(Component.translatable("toggle_keybinds.modmenuscreen.title"));
         this.parent = parent;
         this.newKeys = new ArrayList<>(ToggleKeys.getSavedKeys());
     }
@@ -39,19 +44,17 @@ public class ModMenuScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        assert this.client != null;
+    public void onClose() {
         ToggleKeys.saveKeys(newKeys);
-        this.client.setScreen(this.parent);
+        this.minecraft.setScreen(this.parent);
     }
 
     public void cancel() {
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+        this.minecraft.setScreen(this.parent);
     }
 
     public void saveKeys() {
-        close();
+        onClose();
     }
 
     public ToggleKey addKey() {
@@ -67,17 +70,17 @@ public class ModMenuScreen extends Screen {
 
     //This needs to be overridden for resizing the window to work properly
     @Override
-    protected void refreshWidgetPositions() {
-        this.layout.refreshPositions();
+    protected void repositionElements() {
+        this.layout.arrangeElements();
         if (this.list != null) {
-            this.list.position(this.width, this.layout);
+            this.list.updateSize(this.width, this.layout);
         }
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(@NonNull MouseButtonEvent click, boolean doubled) {
         if (this.selectedKeyBinding != null) {
-            this.selectedKeyBinding.setKey(InputUtil.Type.MOUSE.createFromCode(click.getKeycode()));
+            this.selectedKeyBinding.setKey(InputConstants.Type.MOUSE.getOrCreate(click.input()));
             this.selectedKeyBinding = null;
             this.list.update();
             return true;
@@ -87,12 +90,12 @@ public class ModMenuScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(@NonNull KeyEvent input) {
         if (selectedKeyBinding != null) {
-            if (input.getKeycode() == GLFW.GLFW_KEY_ESCAPE) {
-                selectedKeyBinding.setKey(InputUtil.UNKNOWN_KEY);
+            if (input.input() == GLFW.GLFW_KEY_ESCAPE) {
+                selectedKeyBinding.setKey(InputConstants.UNKNOWN);
             } else {
-                selectedKeyBinding.setKey(InputUtil.fromKeyCode(input));
+                selectedKeyBinding.setKey(InputConstants.getKey(input));
             }
             selectedKeyBinding = null;
             list.update();
@@ -104,27 +107,27 @@ public class ModMenuScreen extends Screen {
 
     @Override
     protected void init() {
-        this.layout = new ThreePartsLayoutWidget(this);
+        this.layout = new HeaderAndFooterLayout(this);
 
-        TextWidget title = new TextWidget(Text.translatable("toggle_keybinds.modmenuscreen.title"), this.textRenderer);
-        layout.addHeader(title, Positioner::alignHorizontalCenter);
+        StringWidget title = new StringWidget(Component.translatable("toggle_keybinds.modmenuscreen.title"), this.font);
+        layout.addToHeader(title, LayoutSettings::alignHorizontallyCenter);
 
-        list = layout.addBody(new ToggleableKeybindingWidget(this, this.client, this.width, layout.getContentHeight(),
+        list = layout.addToContents(new ToggleableKeybindingWidget(this, this.minecraft, this.width, layout.getContentHeight(),
                 layout.getHeaderHeight(), 20));
 
-        ButtonWidget saveButton = ButtonWidget
-                .builder(Text.translatable("toggle_keybinds.modmenuscreen.save"), button -> saveKeys())
-                .dimensions(0, 0, 100, 20)
+        Button saveButton = Button
+                .builder(Component.translatable("toggle_keybinds.modmenuscreen.save"), button -> saveKeys())
+                .bounds(0, 0, 100, 20)
                 .build();
-        ButtonWidget cancelButton = ButtonWidget
-                .builder(Text.translatable("toggle_keybinds.modmenuscreen.cancel"), button -> cancel())
-                .dimensions(0, 0, 100, 20)
+        Button cancelButton = Button
+                .builder(Component.translatable("toggle_keybinds.modmenuscreen.cancel"), button -> cancel())
+                .bounds(0, 0, 100, 20)
                 .build();
-        DirectionalLayoutWidget footer = layout.addFooter(DirectionalLayoutWidget.horizontal().spacing(8));
-        footer.add(saveButton);
-        footer.add(cancelButton);
+        LinearLayout footer = layout.addToFooter(LinearLayout.horizontal().spacing(8));
+        footer.addChild(saveButton);
+        footer.addChild(cancelButton);
 
-        this.layout.forEachChild(this::addDrawableChild);
-        layout.refreshPositions();
+        this.layout.visitWidgets(this::addRenderableWidget);
+        layout.arrangeElements();
     }
 }

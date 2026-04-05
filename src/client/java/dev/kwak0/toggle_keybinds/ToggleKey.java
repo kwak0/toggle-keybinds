@@ -1,20 +1,20 @@
 package dev.kwak0.toggle_keybinds;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 public class ToggleKey {
-    private InputUtil.Key key;
+    private InputConstants.Key key;
     private int slot1;
     private int slot2;
     private boolean keyCooldown = false;
     private boolean duplicate;
 
-    private ToggleKey(int slot1, int slot2, InputUtil.Key key) {
+    private ToggleKey(int slot1, int slot2, InputConstants.Key key) {
         this.slot1 = slot1;
         this.slot2 = slot2;
         this.key = key;
@@ -26,24 +26,24 @@ public class ToggleKey {
         this.slot2 = slot2;
         this.duplicate = false;
         if (keyCode == -1) {
-            this.key = InputUtil.UNKNOWN_KEY;
+            this.key = InputConstants.UNKNOWN;
             return;
         }
-        this.key = InputUtil.fromKeyCode(new KeyInput(keyCode, -1, -1));
-        // Creating mouse keys with InputUtil.fromKeyCode() causes getLocalisedName() to not return the right name.
+        this.key = InputConstants.getKey(new KeyEvent(keyCode, -1, -1));
+        // Creating mouse keys with InputConstants.getKey() causes getLocalisedName() to not return the right name.
         if (getKeyType() == KeyType.MOUSE) {
-            this.key = InputUtil.Type.MOUSE.createFromCode(keyCode);
+            this.key = InputConstants.Type.MOUSE.getOrCreate(keyCode);
         }
     }
 
     public ToggleKey() {
-        this(-1, -1, InputUtil.UNKNOWN_KEY);
+        this(-1, -1, InputConstants.UNKNOWN);
     }
 
     public void toggle(int action) {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (action == GLFW.GLFW_PRESS && isActive(client)  && client.player != null) {
-            PlayerInventory inventory = client.player.getInventory();
+            Inventory inventory = client.player.getInventory();
             if (inventory.getSelectedSlot() != slot1) {
                 inventory.setSelectedSlot(slot1);
             } else {
@@ -63,7 +63,7 @@ public class ToggleKey {
         this.slot2 = slot2;
     }
 
-    public void setKey(InputUtil.Key key) {
+    public void setKey(InputConstants.Key key) {
         this.key = key;
     }
 
@@ -72,11 +72,11 @@ public class ToggleKey {
     }
 
     public int getKeyCode() {
-        return key.getCode();
+        return key.getValue();
     }
 
-    public Text getKeyName() {
-        return isBound() ? key.getLocalizedText() : Text.translatable("toggle_keybinds.key.not_bound");
+    public Component getKeyName() {
+        return isBound() ? key.getDisplayName() : Component.translatable("toggle_keybinds.key.not_bound");
     }
 
     public int getSlot1() {
@@ -96,11 +96,11 @@ public class ToggleKey {
     }
 
     public boolean isBound() {
-        return key != InputUtil.UNKNOWN_KEY;
+        return key != InputConstants.UNKNOWN;
     }
 
-    private boolean isActive(MinecraftClient client) {
-        return isValid() && !keyCooldown && client.currentScreen == null;
+    private boolean isActive(Minecraft client) {
+        return isValid() && !keyCooldown && client.screen == null;
     }
 
     public KeyType getKeyType() {
