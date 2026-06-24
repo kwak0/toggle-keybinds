@@ -100,7 +100,7 @@ public class ToggleKey {
     }
 
     private boolean isActive(Minecraft client) {
-        return isValid() && !keyCooldown && client.screen == null;
+        return isValid() && !keyCooldown && client.gui.screen() == null;
     }
 
     public KeyType getKeyType() {

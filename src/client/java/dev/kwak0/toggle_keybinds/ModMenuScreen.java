@@ -46,11 +46,11 @@ public class ModMenuScreen extends Screen {
     @Override
     public void onClose() {
         ToggleKeys.saveKeys(newKeys);
-        this.minecraft.setScreen(this.parent);
+        this.minecraft.gui.setScreen(this.parent);
     }
 
     public void cancel() {
-        this.minecraft.setScreen(this.parent);
+        this.minecraft.gui.setScreen(this.parent);
     }
 
     public void saveKeys() {
