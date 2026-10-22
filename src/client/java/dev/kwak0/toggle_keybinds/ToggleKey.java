@@ -5,7 +5,6 @@ import net.minecraft.client.input.KeyEvent;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 public class ToggleKey {
     private InputConstants.Key key;
@@ -42,7 +41,7 @@ public class ToggleKey {
 
     public void toggle(int action) {
         Minecraft client = Minecraft.getInstance();
-        if (action == GLFW.GLFW_PRESS && isActive(client)  && client.player != null) {
+        if (action == InputConstants.PRESS && isActive(client)  && client.player != null) {
             Inventory inventory = client.player.getInventory();
             if (inventory.getSelectedSlot() != slot1) {
                 inventory.setSelectedSlot(slot1);

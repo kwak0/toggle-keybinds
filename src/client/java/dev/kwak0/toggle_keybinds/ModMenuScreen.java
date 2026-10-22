@@ -11,7 +11,6 @@ import net.minecraft.client.input.KeyEvent;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +91,7 @@ public class ModMenuScreen extends Screen {
     @Override
     public boolean keyPressed(@NonNull KeyEvent input) {
         if (selectedKeyBinding != null) {
-            if (input.input() == GLFW.GLFW_KEY_ESCAPE) {
+            if (input.input() == InputConstants.KEY_ESCAPE) {
                 selectedKeyBinding.setKey(InputConstants.UNKNOWN);
             } else {
                 selectedKeyBinding.setKey(InputConstants.getKey(input));
