@@ -20,9 +20,9 @@ They are stored in the following format:
 
     [
         {
-        "keyCode": 70,
-        "slot1": 0,
-        "slot2": 8
+          "keyCode": 9,
+          "slot1": 0,
+          "slot2": 1
         }
     ]
 
